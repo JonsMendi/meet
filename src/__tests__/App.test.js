@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme/build';
+import { shallow, mount } from 'enzyme';
 import App from '../App';
 import EventList from '../EventList';
 import CitySearch from '../CitySearch';
@@ -80,5 +80,13 @@ describe('<App /> integration', () => {
         expect(AppWrapper.state('events')).toEqual(allEvents);
         AppWrapper.unmount();
     });
+
+    test("passes the number of events state", () => {
+        const AppWrapper = mount(<App />);
+        const AppNumberOfEventsState = AppWrapper.state("numberOfEvents");
+        expect(AppNumberOfEventsState).not.toEqual(undefined);
+        expect(AppWrapper.find(EventList).props().numberOfEvents).toEqual(32);
+        AppWrapper.unmount();
+      });
 
 });
