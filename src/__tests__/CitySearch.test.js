@@ -1,5 +1,5 @@
 import React from 'react';
-import { shallow } from 'enzyme/build';
+import { shallow } from 'enzyme';
 import CitySearch from '../CitySearch';
 import { mockData } from '../mock-data';
 import { extractLocations } from '../api';
@@ -72,6 +72,7 @@ describe('<CitySearch /> component', () => {
 
         expect(CitySearchWrapper.state('query')).toBe(suggestions[0]);
     });
+
 
     test('selecting CitySearch input reveals the suggestion list', () => {
         
