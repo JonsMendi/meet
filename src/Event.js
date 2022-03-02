@@ -14,14 +14,14 @@ class Event extends Component {
         const { collapsed } = this.state;
         return (
             <div className="event">
-                <h3 className="start-date">{event.summary}</h3>
+                <h2 className="start-date">{event.summary}</h2>
                 <p className="summary">@{event.summary} | {event.location}</p>
                 <p className="location">{event.start.dateTime} ({event.start.timeZone})</p>
                 <p className="description">{event.description}</p>
                 <button className="show-details" onClick={this.handleOnClick}>{collapsed ? "Show Details" : "Hide Details"}</button>
                 {!collapsed && (
                 <div className="details-view">
-                    <h2 className="details-header">About event:</h2>
+                    <h4 className="details-header">About event:</h4>
                     <a href={event.htmlLink} className='details-link' rel="noreferrer" target='_blank'>See details on Google Calendar</a>
                     <p className='description'>{event.description}</p>
                 </div>
