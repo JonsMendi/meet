@@ -2,7 +2,7 @@
 .App {
   text-align: center;
   padding: 2% 5%;
-  background-color: #98c1d9;
+  background-color: #177e89;
 }
 
 .App * {
@@ -14,8 +14,19 @@ ul {
   list-style: none;
 }
 
+li {
+  background-color: #ffc857;
+  box-shadow: 10px 20px 16px -12px rgba(0, 0, 0, 0.75);
+}
+
 p {
   margin: 5px 0;
+}
+
+.main-image {
+  width: 400px;
+  margin-top: 10px;
+  margin-bottom: 20px;
 }
 
 .display-none {
@@ -74,20 +85,22 @@ input[type="number"] {
 }
 
 .suggestions > li:hover {
-  background-color: #bcdcdb;
+  background-color: #db3a34;
 }
 
 .event {
   padding: 10px 10px 35px;
   margin-bottom: 10px;
   text-align: left;
-  border: 1px solid #ccc;
+  border: 2px solid #084c61;
   border-radius: 4px;
   position: relative;
 }
 
-.details-btn {
+.show-details {
   position: absolute;
+  background-color: #323031;
+  color: white;
   right: 5px;
   bottom: 5px;
   padding: 5px 8px;
