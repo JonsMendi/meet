@@ -5,6 +5,8 @@ import EventList from './EventList';
 import CitySearch from './CitySearch';
 import NumberOfEvents from './NumberOfEvents';
 import { extractLocations, getEvents } from './api';
+import meetyourapp from './images/meetyourapp.png';
+
 
 
 class App extends Component {
@@ -12,7 +14,7 @@ class App extends Component {
     events: [],
     locations: [],
     numberOfEvents: 32,
-    currentLocation: 'all'
+    currentLocation: 'all',
   }
 
   /*Under the componentDidMount loads events when the app loads. 
@@ -54,8 +56,20 @@ class App extends Component {
 
   updateNumberOfEvents = (eventCount) => {
     const updateNumber = eventCount.target.value;
-    this.setState({ numberOfEvents: updateNumber });
+    
+    if (updateNumber < 1 || updateNumber > 32) {
+      this.setState({
+        numberOfEvents: updateNumber,
+        errorAlert: 'Please choose a number between 1 and 32' 
+      })
+    } else {
+    this.setState({
+      errorAlert:'', 
+      numberOfEvents: updateNumber
+      
+    });
     this.updateEvents(this.state.currentLocation, this.state.numberOfEvents);
+    }
   };
 
   
@@ -64,9 +78,13 @@ class App extends Component {
   render() {
     return (
       <div className="App">
+        <img className='main-image' src={meetyourapp} alt="meet-your-apa_image" />
+        <NumberOfEvents 
+          numberOfEvents={this.state.numberOfEvents} 
+          updateNumberOfEvents={this.updateNumberOfEvents} 
+          errorAlert ={this.state.errorAlert}/>
         <CitySearch locations={this.state.locations} updateEvents={this.updateEvents}/>
         <EventList events={this.state.events} />
-        <NumberOfEvents numberOfEvents={this.state.numberOfEvents} updateNumberOfEvents={this.updateNumberOfEvents}/>
       </div>
     );
   }
