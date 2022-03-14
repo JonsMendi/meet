@@ -6,6 +6,7 @@ import CitySearch from './CitySearch';
 import NumberOfEvents from './NumberOfEvents';
 import { extractLocations, getEvents } from './api';
 import meetyourapp from './images/meetyourapp.png';
+import { WarningAlert } from './Alert';
 
 
 
@@ -29,6 +30,16 @@ class App extends Component {
         });
       }
     });
+    if (!navigator.onLine) {
+      this.setState({
+        WarningText:
+          "You're Offline, the events will not be updated.",
+      });
+    } else {
+      this.setState({
+        WarningText: "",
+      });
+    }
   }
 
   componentWillUnmount() {
@@ -76,8 +87,11 @@ class App extends Component {
   
 
   render() {
+    const { WarningText } = this.state;
+
     return (
       <div className="App">
+        <WarningAlert text={WarningText} />
         <img className='main-image' src={meetyourapp} alt="meet-your-apa_image" />
         <NumberOfEvents 
           numberOfEvents={this.state.numberOfEvents} 
