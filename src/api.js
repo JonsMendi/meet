@@ -62,6 +62,13 @@ export const getEvents = async () => {
     NProgress.done();
     return mockData;
   }
+
+  if (!navigator.onLine) {
+    const data = localStorage.getItem("lastEvents");
+    NProgress.done();
+    return data?JSON.parse(data).events:[];;
+  }
+  
   const token = await getAccessToken();
 
   if (token) {
@@ -72,6 +79,8 @@ export const getEvents = async () => {
       token;
     const result = await axios.get(url);
     if (result.data) {
+      //under are saved in the localStorage the last viewed events by the user. 
+      //Like this, when the user opens the app offline, the localStorage 'saved' events will be displayed.
       var locations = extractLocations(result.data.events);
       localStorage.setItem("lastEvents", JSON.stringify(result.data));
       localStorage.setItem("locations", JSON.stringify(locations));
