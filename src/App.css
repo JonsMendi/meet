@@ -112,11 +112,12 @@ input[type="number"] {
 .show-details {
   position: absolute;
   background-color: #c2f1ed;
-  color: #1ba498;
+  color: white;
   right: 5px;
   bottom: 5px;
   padding: 5px 8px;
   border-radius: 4px;
+  border-color: #1ba498;
   outline: none;
   cursor: pointer;
 }
