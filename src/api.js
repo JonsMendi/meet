@@ -11,7 +11,7 @@ export const extractLocations = (events) => {
     return locations;
 }
 
-const checkToken = async (accessToken) => {
+export const checkToken = async (accessToken) => {
   const result = await fetch(
     `https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=${accessToken}`
   )
@@ -54,7 +54,10 @@ const getToken = async (code) => {
   return access_token;
 };
 
-
+/*Under, this function will get the events in 3 different ways defined for each condition.
+The first will understand that, using the localhost (production), it will load the mockData events.
+The second will understand that, being offline, it will load the last events saved in localStorage from the last User view.
+The third will understand that, being online, it will load the actual Google Api Calendar. */
 export const getEvents = async () => {
   NProgress.start();
 
