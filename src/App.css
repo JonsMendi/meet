@@ -2,7 +2,7 @@
 .App {
   text-align: center;
   padding: 2% 5%;
-  background-color: #177e89;
+  background-color: #eff4f3;
 }
 
 .App * {
@@ -15,8 +15,8 @@ ul {
 }
 
 li {
-  background-color: #ffc857;
-  box-shadow: 10px 20px 16px -12px rgba(0, 0, 0, 0.75);
+  background-color: white;
+  box-shadow: 10px 20px 16px -12px rgba(194, 241, 237, 0.25);
 }
 
 p {
@@ -75,7 +75,7 @@ input[type="number"] {
   margin: 0;
   top: 43px;
   font-size: 14px;
-  box-shadow: 10px 10px 16px -12px rgba(0, 0, 0, 0.75);
+  box-shadow: 10px 10px 16px -12px rgba(194, 241, 237, 0.25);
   margin-top: 30px;
 }
 
@@ -92,7 +92,7 @@ input[type="number"] {
 }
 
 .suggestions > li:hover {
-  background-color: #db3a34;
+  background-color: #c2f1ed;
 }
 
 .EventList {
@@ -104,15 +104,15 @@ input[type="number"] {
   margin-top: px;
   margin-bottom: 10px;
   text-align: left;
-  border: 2px solid #084c61;
+  border: 2px solid #1ba498;
   border-radius: 4px;
   position: relative;
 }
 
 .show-details {
   position: absolute;
-  background-color: #323031;
-  color: white;
+  background-color: #c2f1ed;
+  color: #1ba498;
   right: 5px;
   bottom: 5px;
   padding: 5px 8px;
