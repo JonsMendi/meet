@@ -4,6 +4,7 @@ import './nprogress.css';
 import EventList from './EventList';
 import CitySearch from './CitySearch';
 import NumberOfEvents from './NumberOfEvents';
+import EventGenre from './EventGenre';
 import meetyourapp from './images/meetyourapp.png';
 import { WarningAlert } from './Alert';
 import WelcomeScreen from './WelcomeScreen';
@@ -27,8 +28,7 @@ class App extends Component {
   to localStorage when the getToken() function in “src/api.js” is called). Then, we’re trying to verify it
   using another function from “src/api.js”—checkToken()—hence why you needed to export it from
   there. If there’s an error in the object returned by checkToken(), the variable isTokenValid will be
-  assigned with the value false; otherwise, it will be true. */
-   
+  assigned with the value false; otherwise, it will be true. */ 
   async componentDidMount() {
     this.mounted = true;
     // Only attempt to access Google API if online
@@ -87,6 +87,9 @@ class App extends Component {
     });
   };
 
+  /*Under, this method will update the number of events displayed according to the number typed 
+  by the user in the NumberOfEvents input. This method is then passed as a prop in NumberOfEvents.
+  The errorAlert is defined in the method as well and passed as prop.*/
   updateNumberOfEvents = (eventCount) => {
     const updateNumber = eventCount.target.value;
     
@@ -105,6 +108,8 @@ class App extends Component {
     }
   };
 
+  //Under the method map the locations and filter the events state to check the number of events per city.
+  //Then this method is used in the ScatterChart to display the information. 
   getData = () => {
     const { locations, events } = this.state;
     const data = locations.map((location) => {
@@ -116,19 +121,16 @@ class App extends Component {
   };
 
   render() {
-    /*The state 'showWelcomeScreen' will be used as a flag to determine when to render the welcome screen
-    as follows: true will mean “show the welcome screen,” false will mean “hide it to show the
-    other components,” and undefined will be used to render an empty div until the state gets
-    either true or false: */
-    
 
     return (
       <div className="App">
         <img className='main-image' src={meetyourapp} alt="meet-your-apa_image" />
+        {/* --- */}
         <NumberOfEvents 
           numberOfEvents={this.state.numberOfEvents} 
           updateNumberOfEvents={this.updateNumberOfEvents} 
           errorAlert ={this.state.errorAlert}/>
+        {/* --- */}
         <CitySearch 
           locations={this.state.locations} 
           updateEvents={this.updateEvents}/>
@@ -136,19 +138,20 @@ class App extends Component {
         {/*Under the WarningAlert is displayed if the user is offline. 'onLine' is using NProgress package */}
         { !navigator.onLine ? (<WarningAlert text='Sorry, you are in offline mode!' />) : (<WarningAlert text=' ' />)}
         {/* --- */}
-        <h4>Events in each city</h4>
-        <ResponsiveContainer height={400}>
-         <ScatterChart
-          margin={{
-            top: 20, right: 20, bottom: 20, left: 20,
-          }}>
-            <CartesianGrid />
-            <XAxis type="category" dataKey="city" name="city" />
-            <YAxis type="number" dataKey="number" name="number of events" />
-            <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-            <Scatter data={this.getData()} fill="#8884d8" />
-          </ScatterChart>
-        </ResponsiveContainer>
+        {/*Under the chart's are displayed */}
+        <div className='data-vis-wrapper'>
+          <EventGenre events={this.state.events}/>
+          <ResponsiveContainer height={400}>
+          <ScatterChart margin={{top: 20, right: 20, bottom: 20, left: 20,}}>
+              <CartesianGrid />
+              <XAxis type="category" dataKey="city" name="city" />
+              <YAxis type="number" dataKey="number" name="number of events" />
+              <Tooltip cursor={{ strokeDasharray: '3 3' }} />
+              <Scatter data={this.getData()} fill="#1ba498" />
+            </ScatterChart>
+          </ResponsiveContainer>
+        </div>
+        {/* --- */}
         <EventList 
           events={this.state.events} />
         {/* --- */}
