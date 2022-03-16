@@ -27,20 +27,36 @@ class App extends Component {
   using another function from “src/api.js”—checkToken()—hence why you needed to export it from
   there. If there’s an error in the object returned by checkToken(), the variable isTokenValid will be
   assigned with the value false; otherwise, it will be true. */
-   async componentDidMount() {
+   
+  async componentDidMount() {
     this.mounted = true;
-    const accessToken = localStorage.getItem('access_token');
-    const isTokenValid = (await checkToken(accessToken)).error ? false : true;
-    const searchParams = new URLSearchParams(window.location.search);
-    const code = searchParams.get("code");
-
-    this.setState({ showWelcomeScreen: !(code || isTokenValid) });
-    if ((code || isTokenValid) && this.mounted) {
+    // Only attempt to access Google API if online
+    if (navigator.onLine & !window.location.href.startsWith('http://localhost')) {
+      //Under, check if the accessToken is valid.
+      const accessToken = localStorage.getItem('access_token');
+      const tokenIsValid = (await checkToken(accessToken)).error ? false : true;
+      const searchParams = new URLSearchParams(window.location.search);
+      const code = searchParams.get('code');
+      //Under, if there are missing a valid code or token the welcome page will be displayed.
+      this.setState({ showWelcomeScreen: !(code || tokenIsValid) });
+      if ((code || tokenIsValid) && this.mounted) {
+        getEvents().then((events) => {
+          if (this.mounted) {
+            this.setState({
+              events: events.slice(0, this.state.numberOfEvents),
+              locations: extractLocations(events)
+            });
+          }
+        });
+      }
+    }
+    // If offline, display MockData.
+    else {
       getEvents().then((events) => {
         if (this.mounted) {
           this.setState({
             events: events.slice(0, this.state.numberOfEvents),
-            locations: extractLocations(events),
+            locations: extractLocations(events)
           });
         }
       });
@@ -93,8 +109,7 @@ class App extends Component {
     as follows: true will mean “show the welcome screen,” false will mean “hide it to show the
     other components,” and undefined will be used to render an empty div until the state gets
     either true or false: */
-    if (this.state.showWelcomeScreen === undefined) 
-      return <div className='App' />
+    
 
     return (
       <div className="App">
@@ -112,9 +127,10 @@ class App extends Component {
         {/* --- */}
         <EventList 
           events={this.state.events} />
-        <WelcomeScreen 
-          showWelcomeScreen={this.state.showWelcomeScreen} 
-          getAccessToken={() => { getAccessToken() }} />
+        {/* --- */}
+        {/*Under, the WelcomeScreen will be displayed only if the user is offline*/}
+        {navigator.onLine && <WelcomeScreen showWelcomeScreen={this.state.showWelcomeScreen} getAccessToken={() => { getAccessToken() }} />}
+        {/* --- */}
       </div>
     );
   }
