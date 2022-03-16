@@ -8,6 +8,7 @@ import meetyourapp from './images/meetyourapp.png';
 import { WarningAlert } from './Alert';
 import WelcomeScreen from './WelcomeScreen';
 import { extractLocations, getEvents, checkToken, getAccessToken } from './api';
+import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 
 class App extends Component {
@@ -104,6 +105,16 @@ class App extends Component {
     }
   };
 
+  getData = () => {
+    const { locations, events } = this.state;
+    const data = locations.map((location) => {
+      const number = events.filter((event) => event.location === location).length
+      const city = location.split(', ').shift()
+      return { city, number };
+    })
+    return data;
+  };
+
   render() {
     /*The state 'showWelcomeScreen' will be used as a flag to determine when to render the welcome screen
     as follows: true will mean “show the welcome screen,” false will mean “hide it to show the
@@ -125,6 +136,19 @@ class App extends Component {
         {/*Under the WarningAlert is displayed if the user is offline. 'onLine' is using NProgress package */}
         { !navigator.onLine ? (<WarningAlert text='Sorry, you are in offline mode!' />) : (<WarningAlert text=' ' />)}
         {/* --- */}
+        <h4>Events in each city</h4>
+        <ResponsiveContainer height={400}>
+         <ScatterChart
+          margin={{
+            top: 20, right: 20, bottom: 20, left: 20,
+          }}>
+            <CartesianGrid />
+            <XAxis type="category" dataKey="city" name="city" />
+            <YAxis type="number" dataKey="number" name="number of events" />
+            <Tooltip cursor={{ strokeDasharray: '3 3' }} />
+            <Scatter data={this.getData()} fill="#8884d8" />
+          </ScatterChart>
+        </ResponsiveContainer>
         <EventList 
           events={this.state.events} />
         {/* --- */}
